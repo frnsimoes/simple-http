@@ -1,6 +1,7 @@
 import pytest
 from webtest import TestApp
 
+
 class TestClient:
     def __init__(self, application):
         self.app = TestApp(application)

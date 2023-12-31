@@ -38,7 +38,6 @@ class BasicWSGIServer:
         route_handler = self.handle_route(environ)
         if route_handler is not None:
             response_body = route_handler(environ)
-            import ipdb; ipdb.set_trace()
         else:
             response_body = "Not Found"
 
