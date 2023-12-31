@@ -19,9 +19,3 @@ def logging_middleware(environ):
 
 
 app.register_middleware(logging_middleware)
-
-
-if __name__ == "__main__":
-    from server import start_server
-
-    start_server(app)
