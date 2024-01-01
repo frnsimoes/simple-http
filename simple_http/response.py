@@ -1,4 +1,6 @@
 class Response:
+    default_status = 200
+    default_headers = [("Content-type", "text/plain")]
     """
     TODO:
     - set default headers
@@ -8,11 +10,11 @@ class Response:
     - handle errors, 404, 500, etc.
     """
 
-    def __init__(self, headers, status_code, response_body):
-        self.response_body = response_body
-        self.headers = headers
-        self.status_code = status_code
+    def __init__(self, headers, status_code, body):
+        self.body = body
+        self.headers = headers or self.default_headers
+        self.status_code = status_code or self.default_status
 
     def __call__(self, environ, start_response):
         start_response(self.status_code, self.headers)
-        return [self.response_body.encode("utf-8")]
+        return [self.body.encode("utf-8")]

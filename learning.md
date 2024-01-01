@@ -1,4 +1,4 @@
-30/12/2023 17:52:07
+30/12/2023
 Minha primeira ideia era entender a implementação de um `web server` e de um `WSGI server`.
 
 Percebi, contudo, que misturar as duas finalidades tornaria o estudo bastante complexo.
@@ -25,3 +25,13 @@ Mudanças:
 - Gunicorn adicionado como dependência.
 - Webtest adicionado como dependência (acesso ao TestClient).
 - Pytest adicionado.
+
+31/12/2023
+- Para ler o body de uma request, usa-se o `wsgi.input`, que é uma chave no dicionário `environ`. o input é um objeto file-like que fornce input do client para a aplicação. Uma vez que se lê o conteúdo, acessando o wsgi.input.read(), não é possível lê-lo novamente. Isso ocorre porque, em Python, quando se um arquivo é lido, a "posição" de leitura avança pelos bytes que já foram lidos. Os dados não são salvos em nenhum lugar depois de lidos.
+
+- o CONTENT_LENGTH é bastante importante para evitar consumo excessivo de memória em arquivos muito grandes. Essa chave é utilizada para indicar o tamanho do body da request (no exemplo atual). Checar o integer máximo do CONTENT_LENGTH ajuda a não ler um arquivo gigantesco de uma vez só, o que beneficia o gerenciamento de memória, previne problemas com a segurança da aplicação e aumenta a eficiência (se a aplicação sabe o limite máximo do body, lhe é possível ler o body em chunks.)
+
+Resumo:
+
+- O Content-Length é um header HTTP que indica o tamanho do corpo da solicitação ou resposta em bytes.
+- O corpo da solicitação é livro pelo `environ['wsgi.input].read()`. Passa-se o content-length como argumento do `read` por questões discutiadas acima.

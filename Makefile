@@ -1,7 +1,7 @@
 run:
 	gunicorn -w 4 app:app
 test:
-	pytest ./tests
+	pytest -sv ./tests
 
 push:
 # Usage: e.g. make push branch=main

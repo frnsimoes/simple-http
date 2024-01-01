@@ -1,4 +1,4 @@
-from simple_framework import BasicWSGIServer
+from simple_http.simple_http import BasicWSGIServer, Route
 
 
 def test_route_registration():
@@ -8,7 +8,17 @@ def test_route_registration():
     def test_route(environ):
         return "Test"
 
-    assert ("/test", test_route) in app.routes
+    assert Route("/test", "GET", test_route) in app.routes
+
+
+def test_route_registration_with_method():
+    app = BasicWSGIServer()
+
+    @app.route("/test", method="POST")
+    def test_route(environ):
+        return "Test"
+
+    assert Route("/test", "POST", test_route) in app.routes
 
 
 def test_middleware_registration():
@@ -43,16 +53,9 @@ def test_route_handling():
         return "Test"
 
     environ = {"PATH_INFO": "/test"}
-    handler = app.handle_route(environ)
+    route = app.get_route(environ)
 
-    assert handler == test_route
-
-
-def test_response_headers_and_status():
-    app = BasicWSGIServer()
-
-    assert app.set_response_headers() == [("Content-type", "text/plain")]
-    assert app.set_response_status() == "200 OK"
+    assert route == Route("/test", "GET", test_route)
 
 
 def test_call_return():
@@ -65,6 +68,6 @@ def test_call_return():
     def dummy_start_response(status, headers):
         pass
 
-    environ = {"PATH_INFO": "/test"}
+    environ = {"PATH_INFO": "/test", "REQUEST_METHOD": "GET"}
     result = app(environ, dummy_start_response)
     assert result == [b"Test"]
