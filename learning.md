@@ -35,3 +35,8 @@ Resumo:
 
 - O Content-Length é um header HTTP que indica o tamanho do corpo da solicitação ou resposta em bytes.
 - O corpo da solicitação é livro pelo `environ['wsgi.input].read()`. Passa-se o content-length como argumento do `read` por questões discutiadas acima.
+
+01/01/2024
+- Talvez eu tenha cometido um erro ao adicionar toda a lógica no `BasicWSGI`. Dessa forma, não consigo chamar o `Response` diretamente na view. A view retorna o body, e preciso manipular os headers e o status code dentro do `BasicWSGI`, o que me parece deselegante.
+
+- O [werkzeug](https://github.com/pallets/werkzeug/blob/main/src/werkzeug/wrappers/response.py), de que o Flask faz uso, encapsula o app WSGI dentro do Response. Já o [Bottle](https://github.com/pallets/flask/blob/main/src/flask/app.py) cria o app WSGI dentro do próprio Bottle. Há apenas uma classe `HTTPResponse` que seta os headers, status_code, cookies, etc, mas nela não há nenhum comportamento.
