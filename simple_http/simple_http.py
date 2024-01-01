@@ -10,17 +10,11 @@ class Route:
     method: str
     handler: Callable
 
-    # def __eq__(self, other):
-    #     return self.path == other.path and self.method == other.method and self.handler == other.handler
-
 
 class BasicWSGIServer:
     def __init__(self):
         self.routes = []
         self.middleware = []
-
-    # def get_registered_paths(self):
-    #     return [route.path for route in self.routes]
 
     def route(self, path, method="GET"):
         def decorator(func):
@@ -45,11 +39,6 @@ class BasicWSGIServer:
 
     def method_allowed(self, environ):
         method = environ["REQUEST_METHOD"]
-        """
-        - check if method is in the list of allowed methods for the route
-        - if not, return 405
-
-        """
         route = self.get_route(environ)
         if not route:
             return False
