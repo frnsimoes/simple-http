@@ -23,8 +23,17 @@ def test_request_with_not_allowed_method(test_client):
     assert response.body == b"Method Not Allowed"
 
 
-def test_post_request(test_client):
+def test_body_create_user(test_client):
+    DummyDB.clean()
     response = test_client.post("/create_user", params={"username": "test_user"})
+    assert response.status == constants.status_code_201
+    assert DummyDB.users == ["test_user"]
+    assert response.body == b"test_user"
+
+
+def test_query_string_create_user(test_client):
+    DummyDB.clean()
+    response = test_client.post("/create_user_with_qs?username=test_user")
     assert response.status == constants.status_code_201
     assert DummyDB.users == ["test_user"]
     assert response.body == b"test_user"

@@ -9,3 +9,7 @@ class DummyDB:
     @classmethod
     def get_users(cls):
         return cls.users
+
+    @classmethod
+    def clean(cls):
+        cls.users = []

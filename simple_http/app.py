@@ -16,32 +16,18 @@ def about(environ):
 
 
 @app.route("/create_user", method="POST")
-def create_user(environ):
-    data = handle_body_data(environ)
-
+def create_user_with_body(environ):
+    data = environ['post_body']
     username = data.get("username", [""])[0]
     DummyDB.create_user(username)
     return username
 
-
-def handle_body_data(environ):
-    try:
-        request_body_size = int(environ.get("CONTENT_LENGTH", 0))
-    except ValueError:
-        request_body_size = 0
-
-    input = environ["wsgi.input"]
-    import ipdb
-
-    ipdb.set_trace()
-
-    request_body = input.read(request_body_size)
-    data = parse_qs(request_body)
-
-    # wsgi.input is a file-like object, so we need to decode it
-    # urrlib.parse.parse_qs returns a dict with byte strings as values
-    data = {k.decode(): [v.decode() for v in vals] for k, vals in data.items()}
-    return data
+@app.route("/create_user_with_qs", method="POST")
+def create_user_with_qs(environ):
+    data = environ['query_string']
+    username = data.get("username", [""])[0]
+    DummyDB.create_user(username)
+    return username
 
 
 def logging_middleware(environ):
