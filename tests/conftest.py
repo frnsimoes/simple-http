@@ -4,6 +4,6 @@ from webtest import TestApp
 
 @pytest.fixture(autouse=True)
 def test_client():
-    from simple_http.dummy_app import app
+    from tests.dummy_app import app
 
     return TestApp(app)

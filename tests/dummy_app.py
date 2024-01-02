@@ -1,4 +1,4 @@
-from simple_http.dummy_db import DummyDB
+from tests.dummy_db import DummyDB
 from simple_http.simple_http import BasicWSGIServer
 
 app = BasicWSGIServer()

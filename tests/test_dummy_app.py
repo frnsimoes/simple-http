@@ -1,5 +1,5 @@
 from simple_http import constants
-from simple_http.dummy_db import DummyDB
+from tests.dummy_db import DummyDB
 
 
 def test_request_to_home(test_client):
