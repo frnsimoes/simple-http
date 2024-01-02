@@ -1,5 +1,5 @@
 run:
-	gunicorn -w 4 simple_http.app:app
+	gunicorn -w 4 tests.dummy_app:app
 
 test:
 	pytest -sv ./tests
