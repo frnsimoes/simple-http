@@ -43,4 +43,4 @@ Resumo:
 
 - O [werkzeug](https://github.com/pallets/werkzeug/blob/main/src/werkzeug/wrappers/response.py), de que o Flask faz uso, encapsula o app WSGI dentro do Response. Já o [Bottle](https://github.com/pallets/flask/blob/main/src/flask/app.py) cria o app WSGI dentro do próprio Bottle. Há apenas uma classe `HTTPResponse` que seta os headers, status_code, cookies, etc, mas nela não há nenhum comportamento.
 
-Voltei, então, à implementação "suja" de deixar tudo no `BasicWSGI`, ao menos a princípio. Perdi bastante tentando pensar em possíveis implementações do Response para utilizá-lo junto com o WSGI, sem haver necessidade disso no momento. Design precoce. Lição aprendida.
+Talvez a melhor solução momentânea seja deixar o BasicWSGI como o centro do qual emana o comportamento da aplicação, e abstrair o mínimo do Response (apenas o retorno de `body`, `status`, `headers`) e o Request (como encapsulador e replacer do `environ`). 

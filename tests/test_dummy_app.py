@@ -37,3 +37,13 @@ def test_query_string_create_user(test_client):
     assert response.status == constants.status_code_201
     assert DummyDB.users == ["test_user"]
     assert response.body == b"test_user"
+
+
+def test_json_create_user(test_client):
+    DummyDB.clean()
+    response = test_client.post_json(
+        "/create_user_with_json", {"username": "test_user"}
+    )
+    assert response.status == constants.status_code_201
+    assert DummyDB.users == ["test_user"]
+    assert response.body == b"test_user"
